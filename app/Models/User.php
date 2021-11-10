@@ -22,11 +22,17 @@ class User extends Authenticatable
         'email',
     ];
 
+    /**
+     * @return HasMany
+     */
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }
 
+    /**
+     * @param Builder $query
+     */
     public function scopeOrderByProductsTotalValue(Builder $query) {
         $query->addSelect(['total_price_products' => Product::selectRaw('sum(price) as total_price')
             ->whereColumn('user_id', 'users.id')
@@ -34,6 +40,9 @@ class User extends Authenticatable
         ])->orderBy('total_price_products', 'DESC');
     }
 
+    /**
+     * @return Builder
+     */
     public static function orderByProductsTotalValueFromCache(): Builder {
         $totalOf45Minutes = 60 * 45;
         return Cache::remember('orderByProductsTotalValueFromCache', $totalOf45Minutes, function() {

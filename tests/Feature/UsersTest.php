@@ -29,7 +29,7 @@ it('creates a new user', function ($username, $email) {
         ->assertSee($username)
         ->assertSee($email);
 
-})->with('users_make');
+})->with('users_make')->group('users');
 
 /**
  *  - Given: A list of forbidden username is provided
@@ -42,7 +42,7 @@ it('avoid to create a new user with a forbidden username', function ($username, 
         ->assertSessionHasErrors([
         'username' => 'You cannot use this username because it is already taken by the system'
     ]);
-})->with('forbidden_usernames');
+})->with('forbidden_usernames')->group('users');
 
 /**
  *  - Given: A saved user
@@ -57,7 +57,7 @@ it('shows an user by username', function() {
         ->assertSuccessful()
         ->assertSee($user->username)
         ->assertSee($user->email);
-});
+})->group('users');
 
 /**
  * Given: A list of 3 users with 6 products each
@@ -73,7 +73,7 @@ test('a query scope that returns the total price value of all products belonging
     $users = User::orderByProductsTotalValue()->get();
 
     assertUserList($users, $orderedUsers);
-});
+})->group('users');
 
 /**
  * Given: A list of 3 users with 6 products each
@@ -93,7 +93,7 @@ test('a method that will return data from cache or make a database call on expir
 
     assertUserList($users, $orderedUsers);
 
-});
+})->group('users');
 
 function assertUserList($users, $orderedUsers) {
 
