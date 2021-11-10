@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
-class UserFactory extends Factory
+class ProductFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -15,8 +15,11 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'username' => Str::replace('.', '-', $this->faker->userName),
-            'email' => $this->faker->unique()->safeEmail(),
+            'title' => $this->faker->name,
+            'price' => $this->faker->numberBetween(0, 5000),
+            'user_id' => User::factory(),
         ];
     }
+
+
 }

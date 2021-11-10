@@ -11,6 +11,8 @@
 |
 */
 
+use App\Models\User;
+
 uses(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -39,7 +41,34 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function getUsersAndProductOrdered(): array
 {
-    // ..
+    $user1 = User::factory()
+        ->hasProducts(6)
+        ->create();
+
+    $user2 = User::factory()
+        ->hasProducts(6)
+        ->create();
+
+    $user3 = User::factory()
+        ->hasProducts(6)
+        ->create();
+
+    $orderedUsers = [
+        $user1->products->sum('price') => [
+            'user' => $user1,
+            'total' => $user1->products->sum('price')
+        ],
+        $user2->products->sum('price') => [
+            'user' => $user2,
+            'total' => $user2->products->sum('price')
+        ],
+        $user3->products->sum('price') => [
+            'user' => $user3,
+            'total' => $user3->products->sum('price')
+        ],
+    ];
+    ksort($orderedUsers);
+    return array_reverse($orderedUsers);
 }
